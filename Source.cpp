@@ -20,6 +20,7 @@ T* compressTheMatrix(T* ptr,long long int* ptrDeadList)
 		else
 			j--;
 	}
+	delete[] ptrDeadList;
 	delete[] ptr;
 	rows--;
 	cols--;
@@ -134,13 +135,15 @@ void askTheVariablesType()
 	float xF = 1.1;
 	double xD = 1.2;
 	long long int xL = 123456;
-
+	cout << endl;
 	cout << "please enter the type of numbers:" << endl;
 	cout << " 'long' for LONG LONG INT" << endl;
 	cout << " 'int' for INTEGER" << endl;
 	cout << " 'float' for FLOUT" << endl;
 	cout << " 'double' for DOUBLE" << endl;
+	cout << ":  ";
 	cin >> type;
+	cout << endl;
 	if (type == "int")
 	{
 		int* ptr = createFirstMatrix(xI);
