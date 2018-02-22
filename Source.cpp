@@ -7,6 +7,11 @@ long long int rows;
 long long int cols;
 long long int allCells;
 
+template<typename T>
+void compressTheMatrix(T* ptr, long long )
+{
+	
+}
 
 template<typename T>
 int doesDeadListHaveThisIndex(T* ptrDeadList, long long int daedListLength, long long int index)
@@ -20,7 +25,7 @@ int doesDeadListHaveThisIndex(T* ptrDeadList, long long int daedListLength, long
 template<typename T>
 void createDeadList(T* ptr)
 {
-	T* ptrDeadList = new T[rows + cols - 1];
+	long long int* ptrDeadList = new long long int[rows + cols - 1];
 	long long int deadListLength = 0;
 	for (int i = 0; i < rows + cols - 1; i++)
 	{
@@ -31,7 +36,7 @@ void createDeadList(T* ptr)
 }
 
 template<typename T>
-long long int findTheSmallestIndex(T* ptr,T* ptrDeadList, long long int deadListLength)
+long long int findTheSmallestIndex(T* ptr,long long int* ptrDeadList, long long int deadListLength)
 {
 	long long int smallestIndex = 0;
 	for (int i = 0; i < rows; i++)
