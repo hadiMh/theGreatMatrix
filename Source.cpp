@@ -39,6 +39,7 @@ int doesDeadListHaveThisIndex(T* ptrDeadList, long long int daedListLength, long
 template<typename T>
 long long int* createDeadList(T* ptr)
 {
+	cout << endl << "The removed numbers:"  << endl;
 	long long int* ptrDeadList = new long long int[rows + cols - 1];
 	long long int deadListLength = 0;
 	for (int i = 0; i < rows + cols - 1; i++)
@@ -46,7 +47,10 @@ long long int* createDeadList(T* ptr)
 		*(ptrDeadList+deadListLength) = findTheSmallestIndex(ptr, ptrDeadList, deadListLength);
 		deadListLength++;
 	}
+	/*
 	cout << endl << "createDeadList have finished" << endl;
+	*/
+	cout << endl;
 	deadListLengthGlobal = deadListLength;
 	return ptrDeadList;
 }
@@ -62,9 +66,9 @@ long long int findTheSmallestIndex(T* ptr,long long int* ptrDeadList, long long 
 					biggestIndex = (i*cols) + j;
 			
 	smallestIndex = biggestIndex;
-
+	/*
 	cout << endl << "|||||" << biggestIndex << "|||||" << endl;
-	
+	*/
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
@@ -76,7 +80,7 @@ long long int findTheSmallestIndex(T* ptr,long long int* ptrDeadList, long long 
 			}
 		}
 	}
-	cout << "<<<smallestIndex>>>:  " << smallestIndex << endl;
+	cout << *(ptr + smallestIndex) << " ";
 	return smallestIndex;
 }
 
@@ -86,8 +90,9 @@ T* createFirstMatrix(T num)
 {
 	T temp;
 	T* ptr = new T[allCells];
+	/*
 	cout << endl << allCells << "---" << num << "---" << endl;
-
+	*/
 	cout << endl << "Enter all the numbers:" << endl;
 
 	for (int i = 0; i < rows; i++)
@@ -99,19 +104,20 @@ T* createFirstMatrix(T num)
 		}
 		getchar();
 	}
+	/*
 	cout << endl << "!!!!" << endl;
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 			cout << *(ptr + (i*cols) + j) << " ";
 	cout << endl << "!!!!" << endl;
-
+	*/
 	return ptr;
 }
 
 template<typename T>
 void printTheMatrix(T* ptr)
 {
-	cout << endl << endl;
+	cout << endl;
 	for (int i = 0; i < allCells; i++)
 	{
 		cout << *(ptr + i) << " ";
@@ -146,15 +152,55 @@ void askTheVariablesType()
 				break;
 			}
 			ptr = compressTheMatrix(ptr, createDeadList(ptr));
+			cout << endl << "the left matrix:";
 			printTheMatrix(ptr);
 		}
 	}
 	else if (type == "float")
-		createDeadList(createFirstMatrix(xF));
+	{
+		float* ptr = createFirstMatrix(xF);
+		while (1)
+		{
+			if (rows == 1 || cols == 1)
+			{
+				cout << endl << "THE END" << endl;
+				break;
+			}
+			ptr = compressTheMatrix(ptr, createDeadList(ptr));
+			cout << endl << "the left matrix:";
+			printTheMatrix(ptr);
+		}
+	}
 	else if (type == "double")
-		createDeadList(createFirstMatrix(xD));
+	{
+		double* ptr = createFirstMatrix(xD);
+		while (1)
+		{
+			if (rows == 1 || cols == 1)
+			{
+				cout << endl << "THE END" << endl;
+				break;
+			}
+			ptr = compressTheMatrix(ptr, createDeadList(ptr));
+			cout << endl << "the left matrix:";
+			printTheMatrix(ptr);
+		}
+	}
 	else if (type == "long")
-		createDeadList(createFirstMatrix(xL));
+	{
+		long long int* ptr = createFirstMatrix(xL);
+		while (1)
+		{
+			if (rows == 1 || cols == 1)
+			{
+				cout << endl << "THE END" << endl;
+				break;
+			}
+			ptr = compressTheMatrix(ptr, createDeadList(ptr));
+			cout << endl << "the left matrix:";
+			printTheMatrix(ptr);
+		}
+	}
 	return;
 }
 
