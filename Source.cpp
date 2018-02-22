@@ -6,11 +6,25 @@ using namespace std;
 long long int rows;
 long long int cols;
 long long int allCells;
+long long int deadListLengthGlobal;
 
 template<typename T>
-void compressTheMatrix(T* ptr, long long )
+T* compressTheMatrix(T* ptr,long long int* ptrDeadList)
 {
-	
+	long long int newAllCells = (rows - 1)*(cols - 1);
+	T* newPtr = new T[(rows - 1)*(cols - 1)];
+	for (int i = 0,j = 0; i < allCells && j<newAllCells; i++, j++)
+	{
+		if (!doesDeadListHaveThisIndex(ptrDeadList, deadListLengthGlobal, i))
+			*(newPtr + j) = *(ptr + i);
+		else
+			j--;
+	}
+	delete[] ptr;
+	rows--;
+	cols--;
+	allCells = newAllCells;
+	return newPtr;
 }
 
 template<typename T>
@@ -23,7 +37,7 @@ int doesDeadListHaveThisIndex(T* ptrDeadList, long long int daedListLength, long
 }
 
 template<typename T>
-void createDeadList(T* ptr)
+long long int* createDeadList(T* ptr)
 {
 	long long int* ptrDeadList = new long long int[rows + cols - 1];
 	long long int deadListLength = 0;
@@ -33,12 +47,24 @@ void createDeadList(T* ptr)
 		deadListLength++;
 	}
 	cout << endl << "createDeadList have finished" << endl;
+	deadListLengthGlobal = deadListLength;
+	return ptrDeadList;
 }
 
 template<typename T>
 long long int findTheSmallestIndex(T* ptr,long long int* ptrDeadList, long long int deadListLength)
 {
 	long long int smallestIndex = 0;
+	long long int biggestIndex = 0;
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+			if (*(ptr + (i*cols) + j) > *(ptr + biggestIndex))
+					biggestIndex = (i*cols) + j;
+			
+	smallestIndex = biggestIndex;
+
+	cout << endl << "|||||" << biggestIndex << "|||||" << endl;
+	
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
@@ -82,6 +108,18 @@ T* createFirstMatrix(T num)
 	return ptr;
 }
 
+template<typename T>
+void printTheMatrix(T* ptr)
+{
+	cout << endl << endl;
+	for (int i = 0; i < allCells; i++)
+	{
+		cout << *(ptr + i) << " ";
+		if ((i + 1) % cols == 0)
+			cout << endl;
+	}
+}
+
 /* This function asks the user which type is going to be entered */
 void askTheVariablesType()
 {
@@ -98,7 +136,19 @@ void askTheVariablesType()
 	cout << " 'double' for DOUBLE" << endl;
 	cin >> type;
 	if (type == "int")
-		createDeadList(createFirstMatrix(xI));
+	{
+		int* ptr = createFirstMatrix(xI);
+		while (1)
+		{
+			if (rows == 1 || cols == 1)
+			{
+				cout << endl << "THE END" << endl;
+				break;
+			}
+			ptr = compressTheMatrix(ptr, createDeadList(ptr));
+			printTheMatrix(ptr);
+		}
+	}
 	else if (type == "float")
 		createDeadList(createFirstMatrix(xF));
 	else if (type == "double")
